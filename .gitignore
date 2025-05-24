@@ -1,0 +1,30 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Backup files
+*~
+
+# Specific files
+shape_predictor_68_face_landmarks.*
+app.py
+download-weights
+utils.py
+
+# Checkpoints and zip files
+checkpoints/
+*.zip
+
+# Model related folders
+Face_Enhancement/models/networks/sync_batchnorm/
+Face_Enhancement/models/networks/Synchronized-BatchNorm-PyTorch/
+
+sync_batchnorm/
+Synchronized-BatchNorm-PyTorch/
+
+# Input/output folders
+input_img_folder/
+output_img_folder/
+
+# Cache folders under Global
+Global/detection_models/__pycache__/
