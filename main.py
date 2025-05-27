@@ -201,6 +201,12 @@ def try_models_on_image(image_path):
     return ""  # Return empty string if all attempts fail
 
 if __name__ == "__main__":
-    image_path = "/home/nhattan05022003/coding/SEM_8/MLN_111/photo_restoration/output_img_folder/final_output/monalisa.png"
+    import sys
+
+    if len(sys.argv) < 2:
+        print("❌ Không truyền đường dẫn ảnh.")
+        sys.exit(1)
+
+    image_path = sys.argv[1]
     description = try_models_on_image(image_path)
-    print(f"Final description: {description}")
+    print(description)
