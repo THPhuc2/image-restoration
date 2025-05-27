@@ -103,7 +103,7 @@
 
 import requests
 import base64
-
+import re
 API_KEYS = [
     "AIzaSyCX8zI_mxdn6GOYRXogSsXsVr15b5iEUJM",
     "AIzaSyDvwkdHeCwoVuT3cIJLVIFlkw0-LblmdAg",
@@ -176,29 +176,36 @@ def try_models_on_image(image_path):
         success = False
         while key_index < len(API_KEYS):
             current_key = API_KEYS[key_index]
-            print(f"\n🔍 Trying model: {model} with API key index {key_index}")
+            # print(f"\n🔍 Trying model: {model} with API key index {key_index}")
             try:
                 res = query_model_with_image(model, image_path, current_key)
                 if res.status_code == 200:
                     output = res.json()
                     text = output["candidates"][0]["content"]["parts"][0]["text"]
-                    print(f"✅ Success with {model} (API key index {key_index}):\n{text}")
+                    # print(f"✅ Success with {model} (API key index {key_index}):\n{text}")
+                    text = text.replace("*", "")
+                    # text = re.sub(r"\*{1,3}(.*?)\*{1,3}", r"\1", text)
                     return text  # Return the description
                 else:
                     error_msg = res.json().get('error', {}).get('message', '')
-                    print(f"⚠️ Model failed ({res.status_code}): {error_msg}")
+                    # print(f"⚠️ Model failed ({res.status_code}): {error_msg}")
                     if "quota" in error_msg.lower() or "exceeded" in error_msg.lower():
-                        print(f"⚠️ Quota exceeded for API key index {key_index}, switching to next key...")
+                        # print(f"⚠️ Quota exceeded for API key index {key_index}, switching to next key...")
                         key_index += 1
                     else:
                         break
             except Exception as e:
-                print(f"❌ Exception occurred with {model} (API key index {key_index}): {e}")
+                # print(f"❌ Exception occurred with {model} (API key index {key_index}): {e}")
                 key_index += 1
         if success:
             return ""
-    print("\n🚫 All models failed or all API keys quota exceeded.")
+    # print("\n🚫 All models failed or all API keys quota exceeded.")
     return ""  # Return empty string if all attempts fail
+
+# if __name__ == "__main__":
+#     image_path = "/home/nhattan05022003/coding/SEM_8/MLN_111/photo_restoration/output_img_folder/final_output/monalisa.png"
+#     description = try_models_on_image(image_path)
+#     print(f"Final description: {description}")
 
 if __name__ == "__main__":
     import sys
